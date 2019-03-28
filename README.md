@@ -13,3 +13,17 @@ Parameter 11 = `Update Remote Desktop @ Target Version`<br/>
 
 See https://www.office4mac.com/courses/msupdate for the training video on how to use this helper!<br/><br/>
 Also, check-out Dan Snelson's script at https://www.jamf.com/jamf-nation/discussions/27968/leveraging-microsoft-autoupdate-3-18-msupdate-binary-with-jamf-pro-10-patch-policies
+
+---
+
+msupdate helpder for AirWatch
+
+<b>Parameter Labels</b><br>
+--debug = `Debug Logging Enabled`<br/>
+--word = `Update Word @ Target Version`<br/>
+--excel = `Update Excel @ Target Version`<br/>
+--powerpoint = `Update PPT @ Target Version`<br/>
+--outlook = `Update Outlook @ Target Version`<br/>
+--skype = `Update SfB @ Target Version`<br/>
+--onenote = `Update OneNote @ Target Version`<br/>
+--rdp = `Update Remote Desktop @ Target Version`<br/>
