@@ -1,7 +1,6 @@
 #!/bin/sh
 #
 # Microsoft AutoUpdate Helper for AirWatch / Wokspace ONE"
-# Script Version 1
 #
 # Modified from: Microsoft AutoUpdate Helper for Jamf Pro
 #
