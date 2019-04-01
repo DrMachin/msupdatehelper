@@ -15,7 +15,7 @@ ONENT="true"
 MSUPDATE="/Library/Scripts/MSUpdateHelper4AirWatch.sh"
 
 if [ -f "$MSUPDATE" ]; then
-    sh "$MSUPDATE" --debug $DEBUG --word $WRD --excel $EXCL --powerpoint $PWRP --outlook $OUTLK --skype $SKYPE --onenote --ONENT \
+    sh "$MSUPDATE" --debug $DEBUG --word $WRD --excel $EXCL --powerpoint $PWRP --outlook $OUTLK --skype $SKYPE --onenote $ONENT \
         > /var/tmp/msupdate.log
     if [ $? == 0 ]; then
         date -u
