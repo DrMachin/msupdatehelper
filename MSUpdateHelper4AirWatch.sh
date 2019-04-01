@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # Microsoft AutoUpdate Helper for AirWatch / Wokspace ONE"
+# Script Version 1.1
 #
 # Modified from: Microsoft AutoUpdate Helper for Jamf Pro
 #
@@ -238,41 +239,41 @@ DetermineLoginState
 
 if [ "$UPDATE_WORD" == "true" ]; then
 	Debug "Going for Word update"
-	RegisterApp "$PATH_WORD" "MSWD15"
+	RegisterApp "$PATH_WORD" "MSWD2019"
 	SetTargetVersion "$VERSION_WORD"
-	PerformUpdate "MSWD15" "$TARGET_VERSION"
+	PerformUpdate "MSWD2019" "$TARGET_VERSION"
 else
 	Debug "Update for Word disabled"
 fi
 if [ "$UPDATE_EXCEL" == "true" ]; then
 	Debug "Going for Excel update"
-	RegisterApp "$PATH_EXCEL" "XCEL15"
+	RegisterApp "$PATH_EXCEL" "XCEL2019"
 	SetTargetVersion "$VERSION_EXCEL"
-	PerformUpdate "XCEL15" "$TARGET_VERSION"
+	PerformUpdate "XCEL2019" "$TARGET_VERSION"
 else
 	Debug "Update for Excel disabled"
 fi
 if [ "$UPDATE_POWERPOINT" == "true" ]; then
 	Debug "Going for PowerPoint update"
-	RegisterApp "$PATH_POWERPOINT" "PPT315"
+	RegisterApp "$PATH_POWERPOINT" "PPT32019"
 	SetTargetVersion "$VERSION_POWERPOINT"
-	PerformUpdate "PPT315" "$TARGET_VERSION"
+	PerformUpdate "PPT32019" "$TARGET_VERSION"
 else
 	Debug "Update for PowerPoint disabled"
 fi
 if [ "$UPDATE_OUTLOOK" == "true" ]; then
 	Debug "Going for Outlook update"
-	RegisterApp "$PATH_OUTLOOK" "OPIM15"
+	RegisterApp "$PATH_OUTLOOK" "OPIM2019"
 	SetTargetVersion "$VERSION_OUTLOOK"
-	PerformUpdate "OPIM15" "$TARGET_VERSION"
+	PerformUpdate "OPIM2019" "$TARGET_VERSION"
 else
 	Debug "Update for Outlook disabled"
 fi
 if [ "$UPDATE_ONENOTE" == "true" ]; then
 	Debug "Going for OneNote update"
-	RegisterApp "$PATH_ONENOTE" "ONMC15"
+	RegisterApp "$PATH_ONENOTE" "ONMC2019"
 	SetTargetVersion "$VERSION_ONENOTE"
-	PerformUpdate "ONMC15" "$TARGET_VERSION"
+	PerformUpdate "ONMC2019" "$TARGET_VERSION"
 else
 	Debug "Update for OneNote disabled"
 fi
