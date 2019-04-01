@@ -227,8 +227,8 @@ function RegisterApp() {
 
 # Function to call 'msupdate' and update the target application
 function PerformUpdate() {
-    Debug "PerformUpdate: ${CMD_PREFIX}/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install --apps $1 $2 --wait 600 2>/dev/null"
-	${CMD_PREFIX}/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install --apps $1 $2 --wait 600 2>/dev/null
+    Debug "PerformUpdate: ${CMD_PREFIX}/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install --apps $1 $2 --wait 30 2>/dev/null"
+	${CMD_PREFIX}/Library/Application\ Support/Microsoft/MAU2.0/Microsoft\ AutoUpdate.app/Contents/MacOS/msupdate --install --apps $1 $2 --wait 30 2>/dev/null
 }
 
 ## MAIN
