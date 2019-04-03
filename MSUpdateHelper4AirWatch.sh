@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Microsoft AutoUpdate Helper for AirWatch / Wokspace ONE"
+# Microsoft AutoUpdate Helper for AirWatch / Wokspace ONE
 # Script Version 1.1
 #
 # Modified from: Microsoft AutoUpdate Helper for Jamf Pro
@@ -15,15 +15,18 @@
 ## of such damages.
 ## Feedback: pbowden@microsoft.com 
 
+# IT Admin constants for profile payload
+PROFILE_DOMAIN="com.github.drmachin.msupdate"
+
 # IT Admin constants for which applications to update [set to true or false as required]
-UPDATE_WORD="true"
-UPDATE_EXCEL="true"
-UPDATE_POWERPOINT="true"
-UPDATE_OUTLOOK="true"
-UPDATE_ONENOTE="true"
-UPDATE_SKYPEBUSINESS="true"
-UPDATE_REMOTEDESKTOP="true"
-UPDATE_COMPANYPORTAL="true"
+UPDATE_WORD="false"
+UPDATE_EXCEL="false"
+UPDATE_POWERPOINT="false"
+UPDATE_OUTLOOK="false"
+UPDATE_ONENOTE="false"
+UPDATE_SKYPEBUSINESS="false"
+UPDATE_REMOTEDESKTOP="false"
+UPDATE_COMPANYPORTAL="false"
 
 # IT Admin constants for application target version [set to "latest" to get latest update, or specific build number, such as "15.41.17120500"]
 VERSION_WORD="latest"
@@ -47,107 +50,64 @@ PATH_COMPANYPORTAL="/Applications/Company Portal.app"
 
 # Function to enable debug logging
 function Debug() {
-    if [ "$OVERRIDE_DEBUG" == "true" ] || [ "$OVERRIDE_DEBUG" == "TRUE" ] || [ "$OVERRIDE_DEBUG" == "True" ] || [ "$OVERRIDE_DEBUG" == "YES" ] || [ "$OVERRIDE_DEBUG" == "yes" ] || [ "$OVERRIDE_DEBUG" == "Yes" ]; then
+    if [ "$OVERRIDE_DEBUG" == "True" ]; then
         LOG=$(date; echo "$1")
         echo "$LOG"
     fi
 }
 
-# Harvest script parameter overrides
-while [ "$1" != "" ]; do
-    case $1 in
-        --debug )       OVERRIDE_DEBUG="${2}"
-                        ;;
-        --word  )       OVERRIDE_WORD="${2}"
-                        Debug "OVERRIDE_WORD: ${2}"
-                        ;;
-        --excel )       OVERRIDE_EXCEL="${2}"
-                        Debug "OVERRIDE_EXCEL: ${2}"
-                        ;;
-        --powerpoint )  OVERRIDE_POWERPOINT="${2}"
-                        Debug "OVERRIDE_POWERPOINT: ${2}"
-                        ;;
-        --outlook )     OVERRIDE_OUTLOOK="${2}"
-                        Debug "OVERRIDE_OUTLOOK: ${2}"
-                        ;;
-        --skype )       OVERRIDE_SKYPEBUSINESS="${2}"
-                        Debug "OVERRIDE_SKYPEBUSINESS: ${2}"
-                        ;;
-        --onenote )     OVERRIDE_ONENOTE="${2}"
-                        Debug "OVERRIDE_ONENOTE: ${2}"
-                        ;;
-        --rdp )         OVERRIDE_REMOTEDESKTOP="${2}"
-                        Debug "OVERRIDE_REMOTEDESKTOP: ${2}"
-                        ;;
-        * )
-    esac
-    shift
-    shift
-done
+OVERRIDE_DEBUG=$( python -c "from Foundation import CFPreferencesCopyAppValue ; print(CFPreferencesCopyAppValue('DEBUG', \"${PROFILE_DOMAIN}\"))" )
 
-# Function to evaluate app update override
+# Function to retrieve overrides from profile
 function GetUpdateOverride() {
     if [ ! "$1" = "" ]; then
-        local UPDATE_FIELD1=$(echo "$1" | cut -d '@' -f1)
-        if [ "$UPDATE_FIELD1" == "TRUE" ] || [ "$UPDATE_FIELD1" == "true" ] || [ "$UPDATE_FIELD1" == "True" ] || [ "$UPDATE_FIELD1" == "YES" ] || [ "$UPDATE_FIELD1" == "yes" ] || [ "$UPDATE_FIELD1" == "Yes" ]; then
-            echo "true"
-        elif [ "$UPDATE_FIELD1" == "FALSE" ] || [ "$UPDATE_FIELD1" == "false" ] || [ "$UPDATE_FIELD1" == "False" ] || [ "$UPDATE_FIELD1" == "NO" ] || [ "$UPDATE_FIELD1" == "no" ] || [ "$UPDATE_FIELD1" == "No" ]; then
-            echo "false"
-        fi
+        local PROFILE_VALUE=$( python -c "from Foundation import CFPreferencesCopyAppValue ; print(CFPreferencesCopyAppValue(\"${1}\", \"${PROFILE_DOMAIN}\"))" )
+		if [ "$PROFILE_VALUE" != "None" ]; then
+			echo "$PROFILE_VALUE" | tr '[:upper:]' '[:lower:]'
+		else
+			echo "$2"
+		fi
     else
         echo "$2"
     fi
 }
 
-# Function to evaluate app version override
-function GetVersionOverride() {
-    if [ ! "$1" = "" ]; then
-        local UPDATE_FIELD2=$(echo "$1" | cut -d '@' -f2)
-        if [ "$UPDATE_FIELD2" == "TRUE" ] || [ "$UPDATE_FIELD2" == "true" ]  || [ "$UPDATE_FIELD2" == "True" ] || [ "$UPDATE_FIELD2" == "YES" ] || [ "$UPDATE_FIELD2" == "yes" ]  || [ "$UPDATE_FIELD2" == "Yes" ] || [ "$UPDATE_FIELD2" == "FALSE" ] || [ "$UPDATE_FIELD2" == "false" ] || [ "$UPDATE_FIELD2" == "False" ]  || [ "$UPDATE_FIELD2" == "NO" ] || [ "$UPDATE_FIELD2" == "no" ] || [ "$UPDATE_FIELD2" == "No" ] ; then
-            echo "$2"
-        else
-            echo "$UPDATE_FIELD2"
-        fi
-    else
-        echo "$2"
-    fi
-}
 
 # Function to parse script parameter overrides
 function GetOverrides() {
-    UPDATE_WORD=$(GetUpdateOverride "$OVERRIDE_WORD" "$UPDATE_WORD")
+    UPDATE_WORD=$(GetUpdateOverride "UPDATE_WORD" "$UPDATE_WORD")
     Debug "Resolved UPDATE_WORD: $UPDATE_WORD"
-    VERSION_WORD=$(GetVersionOverride "$OVERRIDE_WORD" "$VERSION_WORD")
+    VERSION_WORD=$(GetUpdateOverride "VERSION_WORD" "$VERSION_WORD")
     Debug "Resolved VERSION_WORD: $VERSION_WORD"
 
-    UPDATE_EXCEL=$(GetUpdateOverride "$OVERRIDE_EXCEL" "$UPDATE_EXCEL")
+    UPDATE_EXCEL=$(GetUpdateOverride "UPDATE_EXCEL" "$UPDATE_EXCEL")
     Debug "Resolved UPDATE_EXCEL: $UPDATE_EXCEL"
-    VERSION_EXCEL=$(GetVersionOverride "$OVERRIDE_EXCEL" "$VERSION_EXCEL")
+    VERSION_EXCEL=$(GetUpdateOverride "VERSION_EXCEL" "$VERSION_EXCEL")
     Debug "Resolved VERSION_EXCEL: $VERSION_EXCEL"
     
-    UPDATE_POWERPOINT=$(GetUpdateOverride "$OVERRIDE_POWERPOINT" "$UPDATE_POWERPOINT")
+    UPDATE_POWERPOINT=$(GetUpdateOverride "UPDATE_POWERPOINT" "$UPDATE_POWERPOINT")
     Debug "Resolved UPDATE_POWERPOINT: $UPDATE_POWERPOINT"
-    VERSION_POWERPOINT=$(GetVersionOverride "$OVERRIDE_POWERPOINT" "$VERSION_POWERPOINT")
+    VERSION_POWERPOINT=$(GetUpdateOverride "VERSION_POWERPOINT" "$VERSION_POWERPOINT")
     Debug "Resolved VERSION_POWERPOINT: $VERSION_POWERPOINT"
 
-    UPDATE_OUTLOOK=$(GetUpdateOverride "$OVERRIDE_OUTLOOK" "$UPDATE_OUTLOOK")
+    UPDATE_OUTLOOK=$(GetUpdateOverride "UPDATE_OUTLOOK" "$UPDATE_OUTLOOK")
     Debug "Resolved UPDATE_OUTLOOK: $UPDATE_OUTLOOK"
-    VERSION_OUTLOOK=$(GetVersionOverride "$OVERRIDE_OUTLOOK" "$VERSION_OUTLOOK")
+    VERSION_OUTLOOK=$(GetUpdateOverride "VERSION_OUTLOOK" "$VERSION_OUTLOOK")
     Debug "Resolved VERSION_OUTLOOK: $VERSION_OUTLOOK"
 
-    UPDATE_SKYPEBUSINESS=$(GetUpdateOverride "$OVERRIDE_SKYPEBUSINESS" "$UPDATE_SKYPEBUSINESS")
+    UPDATE_SKYPEBUSINESS=$(GetUpdateOverride "UPDATE_SKYPEBUSINESS" "$UPDATE_SKYPEBUSINESS")
     Debug "Resolved UPDATE_SKYPEBUSINESS: $UPDATE_SKYPEBUSINESS"
-    VERSION_SKYPEBUSINESS=$(GetVersionOverride "$OVERRIDE_SKYPEBUSINESS" "$VERSION_SKYPEBUSINESS")
+    VERSION_SKYPEBUSINESS=$(GetUpdateOverride "VERSION_SKYPEBUSINESS" "$VERSION_SKYPEBUSINESS")
     Debug "Resolved VERSION_SKYPEBUSINESS: $VERSION_SKYPEBUSINESS"
     
-    UPDATE_ONENOTE=$(GetUpdateOverride "$OVERRIDE_ONENOTE" "$UPDATE_ONENOTE")
+    UPDATE_ONENOTE=$(GetUpdateOverride "UPDATE_ONENOTE" "$UPDATE_ONENOTE")
     Debug "Resolved UPDATE_ONENOTE: $UPDATE_ONENOTE"
-    VERSION_ONENOTE=$(GetVersionOverride "$OVERRIDE_ONENOTE" "$VERSION_ONENOTE")
+    VERSION_ONENOTE=$(GetUpdateOverride "VERSION_ONENOTE" "$VERSION_ONENOTE")
     Debug "Resolved VERSION_ONENOTE: $VERSION_ONENOTE"
     
-    UPDATE_REMOTEDESKTOP=$(GetUpdateOverride "$OVERRIDE_REMOTEDESKTOP" "$UPDATE_REMOTEDESKTOP")
+    UPDATE_REMOTEDESKTOP=$(GetUpdateOverride "UPDATE_REMOTEDESKTOP" "$UPDATE_REMOTEDESKTOP")
     Debug "Resolved UPDATE_REMOTEDESKTOP: $UPDATE_REMOTEDESKTOP"
-    VERSION_REMOTEDESKTOP=$(GetVersionOverride "$OVERRIDE_REMOTEDESKTOP" "$VERSION_REMOTEDESKTOP")
+    VERSION_REMOTEDESKTOP=$(GetUpdateOverride "VERSION_REMOTEDESKTOP" "$VERSION_REMOTEDESKTOP")
     Debug "Resolved VERSION_REMOTEDESKTOP: $VERSION_REMOTEDESKTOP"
 }
 

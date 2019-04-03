@@ -1,0 +1,36 @@
+<dict>
+    <key>VERSION_WORD</key>
+    <string>16.22.19021100</string>
+    <key>VERSION_EXCEL</key>
+    <string>16.22.19021100</string>
+    <key>VERSION_POWERPOINT</key>
+    <string>16.22.19021100</string>
+    <key>VERSION_OUTLOOK</key>
+    <string>16.22.19022000</string>
+    <key>UPDATE_WORD</key>
+    <true />
+    <key>UPDATE_EXCEL</key>
+    <true />
+    <key>UPDATE_POWERPOINT</key>
+    <true />
+    <key>UPDATE_OUTLOOK</key>
+    <true />
+    <key>UPDATE_ONENOTE</key>
+    <true />
+    <key>UPDATE_SKYPEBUSINESS</key>
+    <true />
+    <key>DEBUG</key>
+    <false />
+    <key>PayloadType</key>
+    <string>com.github.drmachin.msupdate</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Office App Versions</string>
+    <key>PayloadIdentifier</key>
+    <string>com.github.drmachin.D92ECF12-1AB1-46E0-9E76-D4BCECE8F190.msupdate</string>
+    <key>PayloadEnabled</key>
+    <true />
+    <key>PayloadUUID</key>
+    <string>D92ECF12-1AB1-46E0-9E76-D4BCECE8F190</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
